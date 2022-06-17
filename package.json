@@ -1,0 +1,26 @@
+{
+  "name": "@korijn/vue-three",
+  "version": "0.1.0",
+  "main": "./dist/vue-three.umd.js",
+  "module": "./dist/vue-three.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/vue-three.es.js",
+      "require": "./dist/vue-three.umd.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build"
+  },
+  "peerDependencies": {
+    "three": "^0.141.0",
+    "vue": "^3.2.25"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.3.3",
+    "vite": "^2.9.9"
+  }
+}

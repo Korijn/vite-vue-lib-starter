@@ -1,70 +1,83 @@
-import { createRenderer } from '@vue/runtime-core'
+import { createRenderer, watch, watchEffect, toRaw, toRef } from '@vue/runtime-core'
 
 import * as THREE from 'three';
 
-const patchProp = (
-    el,
-    key,
-    prevValue,
-    nextValue,
-    // the rest is unused for most custom renderers
-    // isSVG?: boolean,
-    // prevChildren?: VNode<HostNode, HostElement>[],
-    // parentComponent?: ComponentInternalInstance | null,
-    // parentSuspense?: SuspenseBoundary | null,
-    // unmountChildren?: UnmountChildrenFn
-  ) => {
-    console.log("patchProp");
+
+const setObjValues = (obj, nextValue) => {
+    if (nextValue instanceof Object) {
+        Object.entries(nextValue).forEach(([key, value]) => {
+           obj[key] = value
+        })
+    }
 };
 
-const insert = (
-    el,
-    parent,
-    anchor,
-  ) => {
-    console.log("insert");
+const patchProp = (el, key, prevValue, nextValue) => {
+    console.debug("patchProp", el, key, prevValue, nextValue);
+    if (key == "rotation") {
+        setObjValues(el[key], nextValue);
+    } else {
+        el[key] = nextValue;
+    }
+};
+
+const insert = (el, parent, anchor) => {
+    console.debug("insert", el, parent, anchor);
+    if (anchor) {
+        console.warn("anchor is not supported");
+    }
+    parent.add(el);
 };
 
 const remove = (el) => {
-    console.log("remove");
+    console.debug("remove", el);
+    el.removeFromParent();
 };
 
-const createElement = (
-    type,
-    // isSVG,
-    // isCustomizedBuiltIn,
-    // vnodeProps
-  ) => {
-    console.log("createElement");
-    return {};
+const TYPEMAP = {};
+const createElement = (type) => {
+    console.debug("createElement", type);
+    const typeLower = type.toLowerCase();
+    let constructor = TYPEMAP[typeLower];
+    if (constructor === undefined) {
+        const matchedKey = Object.keys(THREE).find(key => key.toLowerCase() === typeLower);
+        if (matchedKey === undefined) {
+            throw new TypeError(`${type} not found in THREE namespaces`);
+        }
+        TYPEMAP[typeLower] = constructor = THREE[matchedKey];
+    }
+    const el = new constructor();
+    console.debug(`created ${el}`);
+    return el;
 }
 
 const createText = (text) => {
-    console.log("createText");
-    return {};
+    console.debug("createText", text);
+    throw new TypeError(`createText is not supported by @korijn/vue-three`);
 };
 
 const createComment = (text) => {
-    console.log("createComment");
-    return {};
+    console.debug("createComment", text);
+    throw new TypeError(`createComment is not supported by @korijn/vue-three`);
 };
 
 const setText = (node, text) => {
-    console.log("setText");
+    console.debug("setText", node, text);
+    throw new TypeError(`setText is not supported by @korijn/vue-three`);
 };
 
 const setElementText = (node, text) => {
-    console.log("setElementText");
+    console.debug("setElementText", node, text);
+    throw new TypeError(`setElementText is not supported by @korijn/vue-three`);
 };
 
 const parentNode = (node) => {
-    console.log("parentNode");
-    return {};
+    console.debug("parentNode", node);
+    return node.parent;
 };
 
 const nextSibling = (node) => {
-    console.log("nextSibling");
-    return {};
+    console.debug("nextSibling", node);
+    throw new TypeError(`nextSibling is not supported by @korijn/vue-three`);
 };
 
 const { render, createApp } = createRenderer({

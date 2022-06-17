@@ -1,7 +1,8 @@
 import path from 'path';
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,10 +13,13 @@ export default defineConfig({
       fileName: (format) => `vue-three.${format}.js`,
     },
     rollupOptions: {
-      external: ["vue"],
+      plugins: [
+        peerDepsExternal(),
+      ],
       output: {
         globals: {
           vue: "vue",
+          three: "three",
         },
       },
     },

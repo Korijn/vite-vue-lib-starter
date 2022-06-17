@@ -15,12 +15,13 @@
   "scripts": {
     "build": "vite build"
   },
-  "peerDependencies": {
+  "dependencies": {
     "three": "^0.141.0",
     "vue": "^3.2.25"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.3",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
     "vite": "^2.9.9"
   }
 }

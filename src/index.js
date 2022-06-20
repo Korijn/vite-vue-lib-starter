@@ -1,1 +1,1 @@
-export * from "./vue-three";
+export * from "./my-vue-lib";

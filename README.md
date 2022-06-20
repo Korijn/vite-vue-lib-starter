@@ -1,7 +1,3 @@
-# @korijn/vue-three
+# my-vue-lib
 
-Three.js custom renderer for Vue 3
-
-```
-npm install @korijn/vue-three
-```
+Boilerplate project for vue.js libraries using Vite.js as a bundler.

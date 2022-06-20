@@ -9,8 +9,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/index.js"),
-      name: "vue-three",
-      fileName: (format) => `vue-three.${format}.js`,
+      name: "my-vue-lib",
+      fileName: (format) => `my-vue-lib.${format}.js`,
     },
     rollupOptions: {
       plugins: [
@@ -19,7 +19,6 @@ export default defineConfig({
       output: {
         globals: {
           vue: "vue",
-          three: "three",
         },
       },
     },
